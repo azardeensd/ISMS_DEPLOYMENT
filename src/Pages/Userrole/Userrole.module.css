@@ -1,0 +1,998 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+.adminDashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: 'Poppins', sans-serif;
+}
+
+.adminContainer {
+  display: flex;
+  flex: 1;
+}
+
+/* Sidebar Styles */
+.sidebar {
+  width: 280px;
+  background: white;
+  border-right: 1px solid #e2e8f0;
+  padding: 2rem 1.5rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.sidebarSection {
+  margin-bottom: 2rem;
+}
+
+.sidebarSection h3 {
+  color: #1e3a8a;
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  font-family: 'Montserrat', sans-serif;
+}
+
+
+.adminContent {
+  flex: 1;
+  padding: 2.5rem;
+  background-color: #f8fafc;
+}
+
+.adminHeader {
+  margin-bottom: 1.5rem;
+}
+
+.adminHeader h2 {
+  font-size: 2rem;
+  color: #1e3a8a;
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
+}
+
+.adminHeader p {
+  color: #64748b;
+  margin: 0.5rem 0 0;
+  font-size: 0.95rem;
+}
+
+.headerRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.createUserButton {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.createUserButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transition: all 0.5s ease;
+  z-index: -1;
+}
+
+.createUserButton:hover::before {
+  width: 100%;
+}
+
+.createUserButton:hover {
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px);
+}
+
+.buttonIcon {
+  margin-right: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.userListContainer {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+}
+
+.listControls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.searchBox {
+  position: relative;
+  width: 300px;
+}
+
+.searchBox input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+}
+
+.searchBox input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.searchIcon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+}
+
+.userCount {
+  font-size: 0.9rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+.tableResponsive {
+  overflow-x: auto;
+}
+
+.usersTable {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.usersTable th {
+  background-color: #f1f5f9;
+  color: #334155;
+  font-weight: 600;
+  padding: 1rem;
+  text-align: left;
+  font-size: 0.9rem;
+  position: sticky;
+  top: 0;
+}
+
+.usersTable td {
+  padding: 1rem;
+  border-bottom: 1px solid #e2e8f0;
+  color: #475569;
+  font-size: 0.9rem;
+}
+
+.usersTable tr:last-child td {
+  border-bottom: none;
+}
+
+.usersTable tr:hover td {
+  background-color: #f8fafc;
+}
+
+.userCell {
+  display: flex;
+  align-items: center;
+}
+
+.userAvatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-right: 0.75rem;
+}
+
+.roleBadge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.roleBadge.user {
+  background-color: #e0f2fe;
+  color: #0369a1;
+}
+
+.roleBadge.manager {
+  background-color: #f0fdf4;
+  color: #15803d;
+}
+
+.roleBadge.admin {
+  background-color: #fef2f2;
+  color: #b91c1c;
+}
+
+.actionButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.editButton, .deleteButton {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.editButton {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.editButton:hover {
+  background-color: #bfdbfe;
+}
+
+.deleteButton {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.deleteButton:hover {
+  background-color: #fecaca;
+}
+
+.loadingSpinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 1rem;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.cancelButton {
+  align-self: flex-start;
+  background: #e2e8f0;
+  color: #334155;
+  border: none;
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-left: 1rem;
+}
+
+.cancelButton:hover {
+  background: #cbd5e1;
+}
+
+.formActions {
+  display: flex;
+  align-items: center;
+}
+
+/* Modal Overlay */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  backdrop-filter: blur(5px);
+}
+
+/* Modal Content */
+.modalContent {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: modalAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes modalAppear {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modalHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  border-radius: 16px 16px 0 0;
+  color: white;
+}
+
+.modalTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.modalTitle h3 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.modalIcon {
+  font-size: 1.8rem;
+}
+
+.closeButton {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 1.2rem;
+}
+
+.closeButton:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+/* Form inside modal */
+.modalContent .elegantForm {
+  padding: 1.5rem 2rem 2rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.formCard {
+  background: white;
+  font-family: 'Poppins', sans-serif;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 2rem;
+  margin-bottom: 2rem;
+}
+
+.formHeader {
+  display: flex;
+  align-items: center;
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 2rem;
+}
+
+.formIcon {
+  font-size: 1.5rem;
+  font-family: 'Poppins', sans-serif;
+  color: #3b82f6;
+  margin-right: 1rem;
+}
+
+.formHeader h3 {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.5rem;
+  color: #1e293b;
+}
+
+.elegantForm {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Poppins', sans-serif;
+}
+
+.formGrid {
+  display: grid;
+  font-family: 'Poppins', sans-serif;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.5rem;
+  width: 70%;
+  margin-bottom: 1.5rem;
+}
+
+.formGroup {
+  font-family: 'Poppins', sans-serif;
+  margin-bottom: 1rem;
+  
+}
+
+.formGroup label {
+  display: flex;
+  align-items: center;
+  
+  margin-bottom: 0.5rem;
+  color: #475569;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.inputIcon {
+  margin-right: 0.5rem;
+  color: #64748b;
+  font-size: 1rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+.formGroup input,
+.formGroup select {
+  width: 70%;
+  padding: 0.75rem 1rem;
+  font-family: 'Poppins', sans-serif;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+}
+
+.formGroup input:focus,
+.formGroup select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.roleSelect {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1em;
+  font-family: 'Poppins', sans-serif;
+}
+
+.submitButton {
+  align-self: flex-start;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: white;
+  border: none;
+  margin-top: 30px;
+  padding: 0.875rem 2rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.submitButton:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(59, 130, 246, 0.3);
+}
+
+.submitButton:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.buttonLoader {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+  margin-right: 8px;
+}
+
+.plantSelect {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: #fff;
+}
+
+/* Add these styles to your existing Userrole.module.css */
+
+.selectHint {
+  color: #64748b;
+  font-size: 0.75rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+/* Style for disabled select */
+.plantSelect:disabled {
+  background-color: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* Additional role badge styles for new roles */
+.roleBadge.super_admin {
+  background-color: #fef3c7;
+  color: #92400e;
+}
+
+.roleBadge.isms_admin {
+  background-color: #dbeafe;
+  color: #1e40af;
+}
+
+.roleBadge.isc_admin {
+  background-color: #e0e7ff;
+  color: #3730a3;
+}
+
+.roleBadge.process_owner {
+  background-color: #f0fdf4;
+  color: #166534;
+}
+
+.roleBadge.subordinate {
+  background-color: #f8fafc;
+  color: #475569;
+}
+
+.roleBadge.auditor {
+  background-color: #fef7ed;
+  color: #9a3412;
+}
+
+.roleBadge.management_role {
+  background-color: #fae8ff;
+  color: #86198f;
+}
+
+/* Ensure all dropdowns have consistent styling */
+.formGroup select {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background-color: #f8fafc;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1em;
+}
+
+.formGroup select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Manage Options Styles */
+.manageOptionsContent {
+  padding: 1.5rem 2rem 2rem;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #64748b;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab:hover {
+  color: #3b82f6;
+}
+
+.activeTab {
+  color: #3b82f6;
+  border-bottom-color: #3b82f6;
+}
+
+.manageForm {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.formRow {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.manageForm .formGroup {
+  margin-bottom: 0;
+  flex: 1;
+}
+
+.manageForm .formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.manageForm .formGroup input,
+.manageForm .formGroup select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.manageForm .submitButton {
+  height: fit-content;
+  padding: 0.75rem 1.5rem;
+}
+
+.manageTable {
+  overflow-x: auto;
+}
+
+.manageTable table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.manageTable th {
+  background-color: #f9fafb;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.manageTable td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  color: #6b7280;
+}
+
+.manageTable tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Manage Options Styles */
+.manageOptionsContent {
+  padding: 2rem 2rem 2rem;
+}
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #e2e8f0;
+  margin-bottom: 1.5rem;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: #64748b;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab:hover {
+  color: #3b82f6;
+}
+
+.activeTab {
+  color: #3b82f6;
+  border-bottom-color: #3b82f6;
+}
+
+.manageForm {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  background: #f8fafc;
+  border-radius: 8px;
+}
+
+.formRow {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+}
+
+.manageForm .formGroup {
+  margin-bottom: 0;
+  flex: 1;
+}
+
+.manageForm .formGroup label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #374151;
+  font-weight: 500;
+}
+
+.manageForm .formGroup input,
+.manageForm .formGroup select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.manageForm .submitButton {
+  height: fit-content;
+  padding: 0.75rem 1.5rem;
+}
+
+.manageTable {
+  overflow-x: auto;
+}
+
+.manageTable table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.manageTable th {
+  background-color: #f9fafb;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.manageTable td {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #e5e7eb;
+  color: #6b7280;
+}
+
+.manageTable tr:hover {
+  background-color: #f9fafb;
+}
+
+/* Header buttons container */
+.headerButtons {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+/* Updated manage options button style for header */
+.headerButtons .manageOptionsButton {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.headerButtons .manageOptionsButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transition: all 0.5s ease;
+  z-index: -1;
+}
+
+.headerButtons .manageOptionsButton:hover::before {
+  width: 100%;
+}
+
+.headerButtons .manageOptionsButton:hover {
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Updated create user button to match */
+.headerButtons .createUserButton {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.headerButtons .createUserButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 100%;
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+  transition: all 0.5s ease;
+  z-index: -1;
+}
+
+.headerButtons .createUserButton:hover::before {
+  width: 100%;
+}
+
+.headerButtons .createUserButton:hover {
+  box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+  transform: translateY(-2px);
+}
+
+/* Responsive adjustments for dropdowns */
+@media (max-width: 768px) {
+  .formGroup select {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+}
+
+@media (max-width: 1024px) {
+  .formGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .adminContainer {
+    flex-direction: column;
+  }
+  
+  .sidebar {
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .formRow {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 768px) {
+  .headerRow {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .createUserButton {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .adminContent {
+    padding: 1.5rem;
+  }
+  
+  .listControls {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .searchBox {
+    width: 100%;
+  }
+  
+  .modalContent {
+    width: 95%;
+    padding: 0;
+  }
+  
+  .modalContent .formGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .modalHeader {
+    padding: 1rem;
+  }
+  
+  .modalTitle h3 {
+    font-size: 1.3rem;
+  }
+  
+  .formGroup input,
+  .formGroup select {
+    width: 100%;
+  }
+  
+  .tabs {
+    flex-direction: column;
+  }
+  
+  .tab {
+    text-align: left;
+  }
+}

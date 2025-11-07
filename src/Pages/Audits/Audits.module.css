@@ -1,0 +1,780 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap');
+
+.auditDashboard {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: #f8fafc;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.auditContainer {
+  flex: 1;
+  display: flex;
+  padding: 0 20px;
+}
+
+.auditContent {
+  overflow: hidden; /* Prevent the entire content area from scrolling */
+  height: calc(100vh - 120px); /* Adjust based on your header height */
+  display: flex;
+  flex-direction: column;
+}
+
+/* Compact Header Row */
+.compactHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+.debugInfo {
+  margin-top: 5px;
+  font-size: 12px;
+  color: #666;
+}
+
+.refreshButton {
+  background: #10b981;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.refreshButton:hover {
+  background: #059669;
+}
+
+.noData {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+.debugButton {
+  background: #6b7280;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.closeError {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-left: 10px;
+}
+.titleSection h1 {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1e3a8a;
+}
+
+.controlsSection {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.searchBox {
+  position: relative;
+  min-width: 200px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: 16px;
+}
+
+.searchBox input {
+  width: 80%;
+  padding: 10px 15px 10px 38px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  background-color: white;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.searchBox input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.filterDropdown {
+  position: relative;
+  min-width: 180px;
+}
+
+.filterIcon {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748b;
+  font-size: 16px;
+  z-index: 1;
+}
+
+.filterDropdown select {
+  width: 100%;
+  padding: 10px 15px 10px 38px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  background-color: white;
+  appearance: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.filterDropdown select:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.uploadControl {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fileInputLabel input {
+  display: none;
+}
+
+.fileInputButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 15px;
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.fileInputButton:hover {
+  background-color: #bae6fd;
+}
+
+.uploadButton {
+  padding: 10px 15px;
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.uploadButton:hover {
+  background-color: #2563eb;
+}
+
+.uploadButton:disabled {
+  background-color: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.spinIcon {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Error Message */
+.errorMessage {
+  background-color: #fee2e2;
+  color: #b91c1c;
+  padding: 12px 15px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  font-size: 14px;
+  border-left: 4px solid #b91c1c;
+}
+
+/* Enhanced Table Styles */
+.tableWrapper {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+.tableContainer {
+  width: 100%;
+  max-height: calc(100vh - 180px);
+  overflow: auto;
+}
+
+.auditTable {
+  width: 0%;
+  border-collapse: collapse;
+  min-width: fit-content;
+}
+
+.auditTable thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background-color: #f8fafc;
+}
+
+.auditTable th {
+  padding: 12px 15px;
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1042c9;
+  background-color: #f1f5f9;
+  border-bottom: 2px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  position: sticky;
+  top: 0;
+  white-space: nowrap; /* This is the key property to prevent wrapping */
+}
+
+.auditTable th:last-child {
+  border-right: none;
+}
+
+.tableCell {
+  padding: 12px 15px;
+  border-bottom: 1px solid #e2e8f0;
+  border-right: 1px solid #e2e8f0;
+  color: #334155;
+  font-size: 13px;
+  vertical-align: top;
+  background-color: white;
+}
+
+.auditTable tr:last-child td {
+  border-bottom: none;
+}
+
+.auditTable tr:hover td {
+  background-color: #f8fafc;
+}
+
+/* Cell-specific styles */
+.observationCell {
+  min-width: 300px;
+  max-width: 300px;
+}
+
+.editableCell {
+  background-color: #f8fafc;
+}
+
+.editableField {
+  width: 80%;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  resize: vertical;
+  min-height: 40px;
+  transition: all 0.2s;
+  background-color: white;
+}
+
+.editableField:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+.dateInput {
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  background-color: white;
+}
+
+/* NC Badges */
+.ncBadge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.ncBadge.major-nc,
+.ncBadge.minor-nc {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.ncBadge.observation {
+  background-color: #fef9c3;
+  color: #a16207;
+}
+
+.ncBadge.improvement {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+/* Status Select */
+.statusSelect {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #e2e8f0;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.statusSelect.open {
+  background-color: #fee2e2;
+  color: #b91c1c;
+}
+
+.statusSelect.closed {
+  background-color: #dcfce7;
+  color: #15803d;
+}
+
+.statusSelect:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+}
+
+/* Responsibility Select */
+.responsibilitySelect {
+  width: 110%;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  background-color: white;
+}
+
+/* Evidence Cell */
+.evidenceCell {
+  min-width: 120px;
+}
+
+.evidenceDownload,
+.evidenceUpload {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.downloadLink {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #3b82f6;
+  text-decoration: none;
+  font-size: 13px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background-color: #e0f2fe;
+  transition: all 0.2s;
+}
+
+.downloadLink:hover {
+  background-color: #bae6fd;
+}
+
+.clearEvidence {
+  background: none;
+  border: none;
+  color: #b91c1c;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 50%;
+  transition: all 0.2s;
+}
+
+.clearEvidence:hover {
+  background-color: #fee2e2;
+}
+
+.fileLabel {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background-color: #f1f5f9;
+  color: #334155;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.fileLabel:hover {
+  background-color: #e2e8f0;
+}
+
+/* Expand Button */
+.expandButton {
+  background: none;
+  border: none;
+  color: #3b82f6;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 8px;
+  border-radius: 50%;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.expandButton:hover {
+  background-color: #e0f2fe;
+}
+
+/* Expanded Row */
+.expandedRow {
+  background-color: #f8fafc !important;
+}
+
+.expandedRow td {
+  padding: 0;
+}
+
+.expandedContent {
+  padding: 20px;
+  background-color: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.expandedContent h4 {
+  margin: 0 0 15px 0;
+  color: #1e3a8a;
+  font-size: 15px;
+}
+
+.expandedGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.expandedGrid > div {
+  margin-bottom: 0;
+}
+
+.expandedGrid label {
+  display: block;
+  margin-bottom: 8px;
+  color: #475569;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.expandedTextarea {
+  width: 100%;
+  min-height: 100px;
+  padding: 10px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 13px;
+  resize: vertical;
+  background-color: white;
+}
+
+/* Add these new styles to your existing .module.css file */
+
+.editFieldContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldContent {
+  padding: 8px;
+  border-radius: 4px;
+  background-color: #f8fafc;
+  min-height: 40px;
+  max-height: 100px;
+  overflow-y: auto;
+  word-break: break-word;
+}
+
+.editButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  background-color: #e0f2fe;
+  color: #0369a1;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.editButton:hover {
+  background-color: #bae6fd;
+}
+
+/* Edit Popup Styles */
+.editPopupOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.editPopup {
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.editPopup h3 {
+  margin-top: 0;
+  color: #1e3a8a;
+  font-size: 16px;
+  margin-bottom: 15px;
+}
+
+.popupTextarea {
+  width: 95%;
+  min-height: 200px;
+  padding: 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+  resize: vertical;
+  margin-bottom: 15px;
+}
+
+.popupButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.popupCancel,
+.popupSave {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.popupCancel {
+  background-color: #f1f5f9;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+}
+
+.popupCancel:hover {
+  background-color: #e2e8f0;
+}
+
+.popupSave {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+}
+
+.popupSave:hover {
+  background-color: #2563eb;
+}
+
+/* Loading Spinner */
+.loadingSpinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  min-height: 300px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #e2e8f0;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 15px;
+}
+
+.loadingSpinner p {
+  color: #64748b;
+  font-size: 14px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 1200px) {
+  .compactHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .controlsSection {
+    width: 100%;
+  }
+  
+  .searchBox,
+  .filterDropdown {
+    flex: 1;
+    min-width: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .expandedGrid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .auditContainer {
+    padding: 0 10px;
+  }
+  
+  .tableCell {
+    padding: 10px 12px;
+  }
+}
+/* Audit Type Dropdown Styles */
+.auditTypeDropdown {
+  position: relative;
+  display: inline-block;
+  margin-left: 20px;
+}
+
+.dropdownToggle {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #3498db;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.dropdownToggle:hover {
+  background-color: #2980b9;
+}
+
+.dropdownIcon {
+  margin-left: 8px;
+  transition: transform 0.3s;
+}
+
+.auditTypeDropdown:hover .dropdownIcon {
+  transform: rotate(180deg);
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  min-width: 180px;
+  z-index: 1000;
+  margin-top: 5px;
+  overflow: hidden;
+}
+
+.dropdownMenu button {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 12px 16px;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.dropdownMenu button:hover {
+  background-color: #f5f7fa;
+}
+
+.dropdownMenu button.active {
+  background-color: #e3f2fd;
+  color: #3498db;
+  font-weight: 500;
+}
+
+.dropdownMenu button svg {
+  margin-right: 8px;
+}
+
+/* Title section adjustments */
+.titleSection {
+  display: flex;
+  align-items: center;
+}
+
+.titleSection h1 {
+  margin: 0;
+}
+

@@ -1,0 +1,591 @@
+/* RiskManagement.module.css - Updated with proper container structure */
+
+/* Main dashboard container - matches auditDashboard from Audits */
+.riskDashboard {
+  display: flex;
+  flex-direction: column;
+  max-height: 100%;
+  background-color: #f8f9fa;
+}
+
+/* Main container - matches auditContainer from Audits */
+.riskContainer {
+  flex: 1;
+  padding: 0 24px 24px 24px;
+  width: 99%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Content wrapper - matches auditContent from Audits */
+.riskContent {
+  background-color: transparent;
+  border-radius: 0;
+  padding: 0;
+  width: 100%;
+}
+
+/* Header section - matches compactHeader from Audits */
+.compactHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 24px;
+  padding: 16px 0;
+  background-color: transparent;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.titleSection h1 {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1976d2;
+}
+
+/* Controls section - matches controlsSection from Audits */
+.controlsSection {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+/* Search box - matches searchBox from Audits */
+.searchBox {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.searchBox input {
+  padding: 8px 12px 8px 36px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  width: 250px;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.searchBox input:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.1);
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  color: #757575;
+}
+
+/* Filter dropdown - matches filterDropdown from Audits */
+.filterDropdown {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.filterDropdown select {
+  padding: 8px 12px 8px 36px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: white;
+  font-size: 14px;
+  min-width: 150px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.filterDropdown select:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.1);
+}
+
+.filterIcon {
+  position: absolute;
+  left: 12px;
+  color: #757575;
+  pointer-events: none;
+}
+
+/* Refresh button - matches refreshButton from Audits */
+.refreshButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background-color: white;
+  color: #1976d2;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.refreshButton:hover {
+  background-color: #f5f5f5;
+  border-color: #1976d2;
+}
+
+/* Upload control - matches uploadControl from Audits */
+.uploadControl {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.fileInputLabel {
+  cursor: pointer;
+}
+
+.fileInputLabel input {
+  display: none;
+}
+
+.fileInputButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: #1976d2;
+  color: white;
+  border-radius: 4px;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.fileInputButton:hover {
+  background-color: #1565c0;
+}
+
+/* Upload button */
+.uploadButton {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.uploadButton:hover:not(:disabled) {
+  background-color: #43a047;
+}
+
+.uploadButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* User plant info */
+.userPlantInfo {
+  margin-top: 4px;
+  font-size: 14px;
+  color: #666;
+}
+
+.userPlantInfo strong {
+  color: #1976d2;
+}
+
+/* Debug info */
+.debugInfo {
+  margin-top: 4px;
+  color: #999;
+  font-size: 12px;
+}
+
+/* Table wrapper - matches tableWrapper from Audits */
+.tableWrapper {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow: hidden;
+  margin-top: 20px;
+}
+
+/* Keep your existing styles below and modify them to work within this structure */
+
+/* Update existing classes to work within the new structure */
+.root {
+  /* Remove or modify - this is now handled by riskDashboard */
+  display: contents;
+}
+
+.header {
+  /* This is now handled by compactHeader */
+  margin-bottom: 0;
+}
+
+/* Your existing summary cards - these will work within the new structure */
+.summaryCards {
+  margin-bottom: 24px;
+}
+
+.summaryCard {
+  height: 100%;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.summaryCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+}
+
+.cardContent {
+  display: flex;
+  align-items: center;
+}
+
+.cardIcon {
+  font-size: 40px;
+  margin-right: 16px;
+}
+
+.cardValue {
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+/* Filters section */
+.filters {
+  padding: 16px;
+  margin-bottom: 24px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Tabs */
+.tabs {
+  margin-bottom: 24px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Data grid */
+.dataGrid {
+  height: 600px;
+  width: 100%;
+  padding: 16px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Matrix paper */
+.matrixPaper {
+  padding: 24px;
+  height: 100%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.matrixContainer {
+  margin-top: 16px;
+  overflow-x: auto;
+}
+
+.matrixCell {
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.matrixCell:hover {
+  opacity: 0.8;
+}
+
+/* Legend paper */
+.legendPaper {
+  padding: 24px;
+  height: 100%;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.legend {
+  margin-top: 16px;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.legendColor {
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  border-radius: 4px;
+}
+
+/* Chart paper */
+.chartPaper {
+  padding: 24px;
+  height: 100%;
+  min-height: 350px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Heat map */
+.heatMap {
+  padding: 24px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.heatMapContainer {
+  margin-top: 16px;
+  overflow-x: auto;
+}
+
+.heatMapCell {
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.heatMapCell:hover {
+  opacity: 0.8;
+}
+
+/* Loading spinner - matches loadingSpinner from Audits */
+.loadingSpinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 48px;
+  background-color: white;
+  border-radius: 8px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid #f3f3f3;
+  border-top: 3px solid #1976d2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* No data state - matches noData from Audits */
+.noData {
+  text-align: center;
+  padding: 48px;
+  background-color: white;
+  border-radius: 8px;
+}
+
+.noData h3 {
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.noData p {
+  color: #999;
+}
+
+/* Error message - matches errorMessage from Audits */
+.errorMessage {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  background-color: #ffebee;
+  border-left: 4px solid #f44336;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  color: #c62828;
+}
+
+.closeError {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #c62828;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+}
+
+.closeError:hover {
+  background-color: rgba(198, 40, 40, 0.1);
+  border-radius: 4px;
+}
+
+/* Debug button */
+.debugButton {
+  margin-top: 16px;
+  padding: 8px 16px;
+  background-color: #f5f5f5;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  color: #666;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.debugButton:hover {
+  background-color: #e0e0e0;
+}
+
+/* Spin icon animation */
+.spinIcon {
+  animation: spin 1s linear infinite;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .riskContainer {
+    padding: 0 16px 16px 16px;
+  }
+
+  .compactHeader {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .controlsSection {
+    width: 100%;
+  }
+
+  .searchBox input {
+    width: 100%;
+  }
+
+  .filterDropdown select {
+    width: 100%;
+  }
+
+  .uploadControl {
+    width: 100%;
+  }
+
+  .fileInputButton,
+  .uploadButton {
+    flex: 1;
+    justify-content: center;
+  }
+
+  .summaryCards {
+    margin-bottom: 16px;
+  }
+
+  .cardIcon {
+    font-size: 32px;
+  }
+
+  .cardValue {
+    font-size: 1.8rem;
+  }
+
+  .filters {
+    padding: 12px;
+  }
+
+  .matrixPaper,
+  .legendPaper,
+  .chartPaper,
+  .heatMap {
+    padding: 16px;
+  }
+}
+
+/* Animation for new items */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.summaryCard,
+.filters,
+.tabs,
+.dataGrid,
+.matrixPaper,
+.legendPaper,
+.chartPaper,
+.heatMap {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Print styles */
+@media print {
+  .riskDashboard {
+    background-color: white;
+  }
+
+  .riskContainer {
+    padding: 0;
+  }
+
+  .newButton,
+  .filters,
+  .tabs button:not(.Mui-selected),
+  .controlsSection {
+    display: none;
+  }
+
+  .dataGrid {
+    height: auto;
+    overflow: visible;
+    box-shadow: none;
+  }
+
+  .summaryCard,
+  .matrixPaper,
+  .legendPaper,
+  .chartPaper,
+  .heatMap {
+    box-shadow: none;
+    border: 1px solid #e0e0e0;
+  }
+}

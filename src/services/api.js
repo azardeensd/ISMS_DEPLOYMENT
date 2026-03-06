@@ -1,6 +1,6 @@
 import { supabase } from './auth';
 
-class ApiService {
+class api {
   constructor() {
     this.supabase = supabase;
   }
@@ -164,6 +164,526 @@ class ApiService {
       throw new Error('Failed to delete user');
     }
   }
+
+  // Add to api.js inside the ApiService class
+
+// ============ SUPPLIER MANAGEMENT ============
+async getSuppliers() {
+  try {
+    const user = JSON.parse(localStorage.getItem('user'));
+    let query = this.supabase
+      .from('suppliers')
+      .select(`
+        *,
+        companies (name),
+        plants (name)
+      `)
+      .order('name');
+
+    // Filter by plant for non-admin users
+    if (user && user.role !== 'Super Admin') {
+      const { data: userData } = await this.supabase
+        .from('users')
+        .select('plant_name')
+        .eq('id', user.id)
+        .single();
+
+      if (userData && userData.plant_name) {
+        query = query.eq('plant_name', userData.plant_name);
+      }
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw error;
+
+    return data.map(supplier => ({
+      id: supplier.id,
+      name: supplier.name,
+      company_name: supplier.companies?.name,
+      company_id: supplier.company_id,
+      plant_name: supplier.plants?.name,
+      plant_id: supplier.plant_id,
+      contact_person: supplier.contact_person,
+      email: supplier.email,
+      phone: supplier.phone,
+      address: supplier.address,
+      category: supplier.category,
+      status: supplier.status,
+      registration_date: supplier.registration_date,
+      last_audit_date: supplier.last_audit_date,
+      next_audit_date: supplier.next_audit_date,
+      rating: supplier.rating
+    }));
+  } catch (err) {
+    console.error('Error fetching suppliers:', err);
+    return [];
+  }
+}
+
+async createSupplier(supplierData) {
+  try {
+    const { data, error } = await this.supabase
+      .from('suppliers')
+      .insert([{
+        name: supplierData.name,
+        company_id: supplierData.company_id,
+        plant_id: supplierData.plant_id,
+        plant_name: supplierData.plant_name,
+        contact_person: supplierData.contact_person,
+        email: supplierData.email,
+        phone: supplierData.phone,
+        address: supplierData.address,
+        category: supplierData.category,
+        status: supplierData.status || 'Active',
+        registration_date: new Date().toISOString().split('T')[0],
+        rating: supplierData.rating || 0
+      }])
+      .select()
+      .single();
+
+    if (error) throw error;
+    return { success: true, data };
+  } catch (err) {
+    throw new Error(err.message || 'Failed to create supplier');
+  }
+}
+
+async updateSupplier(supplierId, supplierData) {
+  try {
+    const { error } = await this.supabase
+      .from('suppliers')
+      .update({
+        name: supplierData.name,
+        company_id: supplierData.company_id,
+        plant_id: supplierData.plant_id,
+        plant_name: supplierData.plant_name,
+        contact_person: supplierData.contact_person,
+        email: supplierData.email,
+        phone: supplierData.phone,
+        address: supplierData.address,
+        category: supplierData.category,
+        status: supplierData.status,
+        last_audit_date: supplierData.last_audit_date,
+        next_audit_date: supplierData.next_audit_date,
+        rating: supplierData.rating
+      })
+      .eq('id', supplierId);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (err) {
+    throw new Error(err.message || 'Failed to update supplier');
+  }
+}
+
+async deleteSupplier(supplierId) {
+  try {
+    const { error } = await this.supabase
+      .from('suppliers')
+      .delete()
+      .eq('id', supplierId);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (err) {
+    throw new Error('Failed to delete supplier');
+  }
+}
+
+// ============ RISK ASSESSMENT ============
+async getRiskAssessments() {
+  try {
+    const user = JSON.parse(localStorage.getItem('user'));
+    let query = this.supabase
+      .from('risk_assessments')
+      .select('*')
+      .order('assessment_date', { ascending: false });
+
+    // Filter by plant for non-admin users
+    if (user && user.role !== 'Super Admin') {
+      const { data: userData } = await this.supabase
+        .from('users')
+        .select('plant_name')
+        .eq('id', user.id)
+        .single();
+
+      if (userData && userData.plant_name) {
+        query = query.eq('plant_name', userData.plant_name);
+      }
+    }
+
+    const { data, error } = await query;
+
+    if (error) throw error;
+
+    return data.map(risk => ({
+      id: risk.id,
+      risk_id: risk.risk_id,
+      plant_name: risk.plant_name,
+      department: risk.department,
+      process_area: risk.process_area,
+      risk_description: risk.risk_description,
+      risk_category: risk.risk_category,
+      likelihood: risk.likelihood,
+      impact: risk.impact,
+      risk_level: risk.risk_level,
+      risk_score: risk.risk_score,
+      existing_controls: risk.existing_controls,
+      control_effectiveness: risk.control_effectiveness,
+      residual_risk: risk.residual_risk,
+      treatment_plan: risk.treatment_plan,
+      responsible_person: risk.responsible_person,
+      review_date: risk.review_date,
+      status: risk.status,
+      assessment_date: risk.assessment_date,
+      assessed_by: risk.assessed_by
+    }));
+  } catch (err) {
+    console.error('Error fetching risk assessments:', err);
+    return [];
+  }
+}
+
+async createRiskAssessment(riskData) {
+  try {
+    // Generate risk ID
+    const riskId = `RISK-${Date.now().toString(36).toUpperCase()}`;
+    
+    // Calculate risk score and level
+    const riskScore = riskData.likelihood * riskData.impact;
+    let riskLevel = 'Low';
+    if (riskScore >= 15) riskLevel = 'High';
+    else if (riskScore >= 8) riskLevel = 'Medium';
+
+    const { data, error } = await this.supabase
+      .from('risk_assessments')
+      .insert([{
+        risk_id: riskId,
+        plant_name: riskData.plant_name,
+        department: riskData.department,
+        process_area: riskData.process_area,
+        risk_description: riskData.risk_description,
+        risk_category: riskData.risk_category,
+        likelihood: riskData.likelihood,
+        impact: riskData.impact,
+        risk_level: riskLevel,
+        risk_score: riskScore,
+        existing_controls: riskData.existing_controls,
+        control_effectiveness: riskData.control_effectiveness,
+        residual_risk: riskData.residual_risk,
+        treatment_plan: riskData.treatment_plan,
+        responsible_person: riskData.responsible_person,
+        review_date: riskData.review_date,
+        status: riskData.status || 'Open',
+        assessment_date: new Date().toISOString().split('T')[0],
+        assessed_by: JSON.parse(localStorage.getItem('user')).username
+      }])
+      .select()
+      .single();
+
+    if (error) throw error;
+    return { success: true, data };
+  } catch (err) {
+    throw new Error(err.message || 'Failed to create risk assessment');
+  }
+}
+
+async updateRiskAssessment(riskId, riskData) {
+  try {
+    // Recalculate risk score and level if likelihood or impact changed
+    let riskLevel = riskData.risk_level;
+    let riskScore = riskData.risk_score;
+    
+    if (riskData.likelihood && riskData.impact) {
+      riskScore = riskData.likelihood * riskData.impact;
+      if (riskScore >= 15) riskLevel = 'High';
+      else if (riskScore >= 8) riskLevel = 'Medium';
+      else riskLevel = 'Low';
+    }
+
+    const { error } = await this.supabase
+      .from('risk_assessments')
+      .update({
+        plant_name: riskData.plant_name,
+        department: riskData.department,
+        process_area: riskData.process_area,
+        risk_description: riskData.risk_description,
+        risk_category: riskData.risk_category,
+        likelihood: riskData.likelihood,
+        impact: riskData.impact,
+        risk_level: riskLevel,
+        risk_score: riskScore,
+        existing_controls: riskData.existing_controls,
+        control_effectiveness: riskData.control_effectiveness,
+        residual_risk: riskData.residual_risk,
+        treatment_plan: riskData.treatment_plan,
+        responsible_person: riskData.responsible_person,
+        review_date: riskData.review_date,
+        status: riskData.status
+      })
+      .eq('id', riskId);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (err) {
+    throw new Error(err.message || 'Failed to update risk assessment');
+  }
+}
+
+async deleteRiskAssessment(riskId) {
+  try {
+    const { error } = await this.supabase
+      .from('risk_assessments')
+      .delete()
+      .eq('id', riskId);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (err) {
+    throw new Error('Failed to delete risk assessment');
+  }
+}
+
+async getRiskMatrix() {
+  try {
+    const { data, error } = await this.supabase
+      .from('risk_assessments')
+      .select('likelihood, impact, risk_level')
+      .order('assessment_date', { ascending: false });
+
+    if (error) throw error;
+
+    // Create a 5x5 matrix
+    const matrix = Array(5).fill().map(() => Array(5).fill(0));
+    data.forEach(risk => {
+      if (risk.likelihood && risk.impact) {
+        matrix[risk.likelihood - 1][risk.impact - 1]++;
+      }
+    });
+
+    return matrix;
+  } catch (err) {
+    console.error('Error fetching risk matrix:', err);
+    return Array(5).fill().map(() => Array(5).fill(0));
+  }
+}
+
+// ============ ACCESS CONTROL ============
+async getAccessLogs() {
+  try {
+    const { data, error } = await this.supabase
+      .from('access_logs')
+      .select(`
+        *,
+        users (username, role, department)
+      `)
+      .order('timestamp', { ascending: false })
+      .limit(1000);
+
+    if (error) throw error;
+
+    return data.map(log => ({
+      id: log.id,
+      user_id: log.user_id,
+      username: log.users?.username,
+      user_role: log.users?.role,
+      user_department: log.users?.department,
+      action: log.action,
+      page: log.page,
+      details: log.details,
+      ip_address: log.ip_address,
+      timestamp: log.timestamp,
+      status: log.status
+    }));
+  } catch (err) {
+    console.error('Error fetching access logs:', err);
+    return [];
+  }
+}
+
+async getUserRoles() {
+  try {
+    const { data, error } = await this.supabase
+      .from('roles')
+      .select('*')
+      .order('name');
+
+    if (error) throw error;
+    return data;
+  } catch (err) {
+    console.error('Error fetching roles:', err);
+    return [];
+  }
+}
+
+async getRolePermissions() {
+  try {
+    const { data, error } = await this.supabase
+      .from('role_permissions')
+      .select(`
+        *,
+        roles (name),
+        permissions (name, module, description)
+      `)
+      .order('role_id');
+
+    if (error) throw error;
+
+    // Group by role
+    const permissionsByRole = {};
+    data.forEach(rp => {
+      if (!permissionsByRole[rp.role_id]) {
+        permissionsByRole[rp.role_id] = {
+          role_id: rp.role_id,
+          role_name: rp.roles.name,
+          permissions: []
+        };
+      }
+      permissionsByRole[rp.role_id].permissions.push({
+        permission_id: rp.permission_id,
+        permission_name: rp.permissions.name,
+        module: rp.permissions.module,
+        description: rp.permissions.description
+      });
+    });
+
+    return Object.values(permissionsByRole);
+  } catch (err) {
+    console.error('Error fetching permissions:', err);
+    return [];
+  }
+}
+
+async logAccess(action, page, details = '', status = 'success') {
+  try {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user) return;
+
+    // Get IP address (you might need to use a service or serverless function for this)
+    const ip_address = '127.0.0.1'; // Placeholder
+
+    const { error } = await this.supabase
+      .from('access_logs')
+      .insert([{
+        user_id: user.id,
+        action,
+        page,
+        details,
+        ip_address,
+        timestamp: new Date().toISOString(),
+        status
+      }]);
+
+    if (error) console.error('Error logging access:', error);
+  } catch (err) {
+    console.error('Error logging access:', err);
+  }
+}
+
+async updateUserRole(userId, roleId) {
+  try {
+    const { error } = await this.supabase
+      .from('users')
+      .update({ role_id: roleId })
+      .eq('id', userId);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (err) {
+    throw new Error('Failed to update user role');
+  }
+}
+
+async assignPermissionToRole(roleId, permissionId) {
+  try {
+    const { error } = await this.supabase
+      .from('role_permissions')
+      .insert([{
+        role_id: roleId,
+        permission_id: permissionId
+      }]);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (err) {
+    throw new Error('Failed to assign permission');
+  }
+}
+
+async removePermissionFromRole(roleId, permissionId) {
+  try {
+    const { error } = await this.supabase
+      .from('role_permissions')
+      .delete()
+      .eq('role_id', roleId)
+      .eq('permission_id', permissionId);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (err) {
+    throw new Error('Failed to remove permission');
+  }
+}
+
+async getAvailablePermissions() {
+  try {
+    const { data, error } = await this.supabase
+      .from('permissions')
+      .select('*')
+      .order('module, name');
+
+    if (error) throw error;
+    return data;
+  } catch (err) {
+    console.error('Error fetching permissions:', err);
+    return [];
+  }
+}
+
+async getActiveSessions() {
+  try {
+    const { data, error } = await this.supabase
+      .from('user_sessions')
+      .select(`
+        *,
+        users (username, role, department)
+      `)
+      .eq('is_active', true)
+      .order('login_time', { ascending: false });
+
+    if (error) throw error;
+
+    return data.map(session => ({
+      id: session.id,
+      user_id: session.user_id,
+      username: session.users?.username,
+      user_role: session.users?.role,
+      user_department: session.users?.department,
+      login_time: session.login_time,
+      last_activity: session.last_activity,
+      ip_address: session.ip_address,
+      user_agent: session.user_agent
+    }));
+  } catch (err) {
+    console.error('Error fetching active sessions:', err);
+    return [];
+  }
+}
+
+async terminateSession(sessionId) {
+  try {
+    const { error } = await this.supabase
+      .from('user_sessions')
+      .update({ is_active: false })
+      .eq('id', sessionId);
+
+    if (error) throw error;
+    return { success: true };
+  } catch (err) {
+    throw new Error('Failed to terminate session');
+  }
+}
 
   // Audit Data
   async getAuditData(auditType) {
@@ -458,4 +978,4 @@ class ApiService {
   }
 }
 
-export default new ApiService();
+export default new api();

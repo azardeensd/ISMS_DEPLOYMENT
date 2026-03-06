@@ -10,7 +10,10 @@ import {
   FiUser, 
   FiChevronDown,
   FiX,
-  FiGrid
+  FiGrid,
+  FiTruck, // Add this icon for supplier
+  FiAlertTriangle, // Add this icon for risk
+  FiLock // Add this icon for access control
 } from 'react-icons/fi';
 
 const Header = () => {
@@ -98,11 +101,22 @@ const Header = () => {
       <header className={styles.navHeader} style={getNavHeaderStyle()}>
         <nav className={styles.leftNav}>
           <ul className={styles.navLinks}>
+            {/* Dashboard Link */}
+            <li>
+              <a href="/dashboard" onClick={(e) => { e.preventDefault(); navigate('/dashboard'); }}>
+                <FiGrid className={styles.navIcon} /> Dashboard
+              </a>
+            </li>
+
+            {/* Audits Dropdown */}
             <li className={styles.auditDropdown}>
               <a href="/audits">Audits <FiChevronDown className={styles.chevronIcon} /></a>
               <div className={styles.dropdownContent}>
-                <a href="/dashboard" onClick={(e) => { e.preventDefault(); navigate('/dashboard'); }}>
-                  <FiGrid className={styles.dropdownIcon} /> Dashboard
+                <a 
+                  href="/audits" 
+                  onClick={(e) => { e.preventDefault(); navigate('/audits'); }}
+                >
+                  <FiGrid className={styles.dropdownIcon} /> All Audits
                 </a>
                 <a 
                   href="/audits?type=internal" 
@@ -118,13 +132,38 @@ const Header = () => {
                 </a>
               </div>
             </li>
+
+            {/* New Supplier Link */}
+            <li>
+              <a href="/supplier" onClick={(e) => { e.preventDefault(); navigate('/supplier'); }}>
+                <FiTruck className={styles.navIcon} /> Suppliers
+              </a>
+            </li>
+
+            {/* New Risk Assessment Link */}
+            <li>
+              <a href="/risk-assessment" onClick={(e) => { e.preventDefault(); navigate('/risk-assessment'); }}>
+                <FiAlertTriangle className={styles.navIcon} /> Risk Assessment
+              </a>
+            </li>
+
+            {/* New Access Control Link - Only for Super Admin and Admin */}
+            {(userRole === 'Super Admin' || userRole === 'Admin') && (
+              <li>
+                <a href="/access-control" onClick={(e) => { e.preventDefault(); navigate('/access-control'); }}>
+                  <FiLock className={styles.navIcon} /> Access Control
+                </a>
+              </li>
+            )}
+
+            {/* User Management - Only for Super Admin */}
             {userRole === 'Super Admin' && (
               <li>
                 <a 
                   href="/userrole" 
                   onClick={handleUserManagementClick}
                 >
-                  User Management
+                  <FiUsers className={styles.navIcon} /> User Management
                 </a>
               </li>
             )}

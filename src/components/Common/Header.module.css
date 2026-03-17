@@ -1,13 +1,14 @@
-/* Header.module.css */
+/* Header.module.css - Attractive Modern Design */
 
 /* Main container styles */
 .headerContainer {
   display: flex;
   flex-direction: column;
   width: 100%;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Poppins', 'Montserrat', sans-serif;
   position: relative;
   z-index: 100;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
 /* First Header - Title, User Profile and Logout */
@@ -16,36 +17,71 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  height: 40px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  height: 50px;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.mainHeader::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  animation: shine 8s infinite;
+}
+
+@keyframes shine {
+  0% { left: -100%; }
+  20% { left: 100%; }
+  100% { left: 100%; }
 }
 
 .headerTitle {
   margin: 0;
-  font-size: 1.5rem;
-  color: #eee;
-  font-weight: bold;
+  font-size: 1.6rem;
+  background: linear-gradient(135deg, #fff 0%, #e0e7ff 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
   text-align: center;
   position: absolute;
   padding: 10px 0;
   left: 50%;
   transform: translateX(-50%);
   white-space: nowrap;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 /* Second Header - Navigation Links */
 .navHeader {
   display: flex;
-  
   justify-content: flex-start;
   width: 100%;
-  height: 45px;
+  height: 55px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #6b8cff 100%);
+  background-size: 200% 200%;
+  animation: gradientShift 10s ease infinite;
+  border-bottom: 3px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
 /* Navigation sections */
 .leftNav {
   margin-right: auto;
-  margin-left: 20px;
+  margin-left: 30px;
   display: flex;
   align-items: center;
 }
@@ -54,7 +90,8 @@
   margin-left: auto;
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 20px;
+  padding-right: 20px;
 }
 
 /* Navigation links */
@@ -63,7 +100,7 @@
   list-style: none;
   margin: 0;
   padding: 0;
-  gap: 1.5rem;
+  gap: 2rem;
 }
 
 .navLinks li {
@@ -74,112 +111,147 @@
   color: white;
   text-decoration: none;
   font-weight: 500;
-  transition: color 0.3s;
-  display: flex;
-  align-items: center;
-}
-
-.navLinks a:hover {
-  color: #0fcaeb;
-}
-
-/* User Profile Styles */
-.userProfileContainer {
-  position: relative;
-  font-family: 'Montserrat', sans-serif;
-}
-
-.userProfileButton {
   display: flex;
   align-items: center;
   gap: 8px;
-  background: transparent;
-  border: none;
-  color: white;
-  font-family: 'Montserrat', sans-serif;
-  cursor: pointer;
-  font-weight: 500;
-  padding: 5px 10px;
-  border-radius: 4px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+  position: relative;
+  overflow: hidden;
 }
 
-.userProfileButton:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  
-}
-
-.userIcon, .dropdownArrow {
-  font-size: 16px;
-}
-
-.profileDropdown {
+.navLinks a::before {
+  content: '';
   position: absolute;
-  right: 0;
-  top: 100%;
-  background-color: white;
-  min-width: 250px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 100;
-  border-radius: 6px;
-  padding: 15px;
-  margin-top: 5px;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s ease;
 }
 
-.profileHeader {
+.navLinks a:hover::before {
+  left: 100%;
+}
+
+.navLinks a:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.navIcon {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.navLinks a:hover .navIcon {
+  transform: scale(1.1) rotate(5deg);
+}
+
+/* User Info Styles */
+.userInfo {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
-  color: #333;
-  border-bottom: 1px solid #eee;
-  padding-bottom: 10px;
+  gap: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 6px 15px;
+  border-radius: 30px;
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
 }
 
-.profileHeader h3 {
-  margin: 0;
-  font-size: 16px;
+.userInfo:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
 
-.profileIcon {
-  font-size: 20px;
-}
-
-.profileDetails {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.profileItem {
-  display: flex;
-  justify-content: space-between;
-}
-
-.profileLabel {
+.userName {
+  color: white;
   font-weight: 600;
-  color: #555;
+  font-size: 0.95rem;
+  position: relative;
+  padding-left: 10px;
 }
 
-.profileValue {
-  color: #333;
+.userName::before {
+  content: '👤';
+  position: absolute;
+  left: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+
+.userDepartment {
+  color: #e0e7ff;
+  font-size: 0.85rem;
+  padding: 3px 8px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.userRole {
+  color: #ffd700;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: 1px solid rgba(255, 215, 0, 0.3);
 }
 
 /* Logout button */
 .logoutButton {
-  background: transparent;
+  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
   color: white;
-  border: 1px solid white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 4px;
-  font-weight: 500;
-  margin-right: 20px;
-  font-family: 'Montserrat', sans-serif;
+  border: none;
+  padding: 8px 20px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  font-family: 'Poppins', sans-serif;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(225, 29, 72, 0.3);
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.logoutButton::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left 0.5s ease;
+}
+
+.logoutButton:hover::before {
+  left: 100%;
 }
 
 .logoutButton:hover {
-  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(225, 29, 72, 0.4);
+  background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+}
+
+.logoutButton:active {
+  transform: translateY(0);
 }
 
 /* Dropdown Styles */
@@ -189,41 +261,76 @@
   display: inline-block;
 }
 
+.chevronIcon {
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+  margin-left: 2px;
+}
+
+.auditDropdown:hover .chevronIcon {
+  transform: rotate(180deg);
+}
+
 .dropdownContent {
   display: none;
   position: absolute;
-  background-color: white;
-  min-width: 200px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
-  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  min-width: 240px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  border-radius: 12px;
   top: 100%;
+  left: 0;
+  margin-top: 10px;
+  padding: 8px 0;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  animation: dropdownFade 0.3s ease;
+}
+
+@keyframes dropdownFade {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .navLinks li:hover .dropdownContent {
-  color: #e0e5e7;
   display: block;
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
 }
 
 .dropdownContent a {
-  color: #333;
-  padding: 12px 16px;
+  color: #1e293b;
+  padding: 12px 20px;
   text-decoration: none;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
 }
 
 .dropdownContent a:hover {
-  background-color: #f3f4f6;
-  color: #1d4ed8;
+  background: linear-gradient(90deg, #f8fafc 0%, #e2e8f0 100%);
+  color: #2563eb;
+  padding-left: 25px;
+  border-left: 3px solid #2563eb;
 }
 
 .dropdownIcon {
-  font-size: 1rem;
-  color: #555;
-  margin-right: 8px;
+  font-size: 1.1rem;
+  color: #64748b;
+  transition: all 0.2s ease;
+}
+
+.dropdownContent a:hover .dropdownIcon {
+  color: #2563eb;
+  transform: scale(1.1);
 }
 
 /* Popup Styles */
@@ -233,68 +340,259 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.8) 100%);
+  backdrop-filter: blur(5px);
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .popupContainer {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  width: 300px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  padding: 30px;
+  border-radius: 20px;
+  width: 350px;
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.3);
   position: relative;
+  animation: slideUp 0.4s ease;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .closeButton {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 15px;
+  right: 15px;
   background: none;
   border: none;
   cursor: pointer;
   font-size: 1.2rem;
+  color: #94a3b8;
+  transition: all 0.2s ease;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.closeButton:hover {
+  background: #f1f5f9;
+  color: #ef4444;
+  transform: rotate(90deg);
 }
 
 .popupContent {
   text-align: center;
-  padding: 20px;
+  padding: 20px 10px;
 }
 
 .popupContent h3 {
-  color: #e53e3e;
+  color: #ef4444;
   margin-bottom: 15px;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.popupContent p {
+  color: #475569;
+  margin-bottom: 25px;
+  line-height: 1.6;
+  font-size: 1rem;
 }
 
 .popupButton {
-  background-color: #1e40af;
+  background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
   color: white;
   border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
+  padding: 12px 30px;
+  border-radius: 30px;
+  font-weight: 600;
+  font-size: 1rem;
   cursor: pointer;
-  margin-top: 15px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 .popupButton:hover {
-  background-color: #1e3a8a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(37, 99, 235, 0.4);
+  background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+}
+
+.popupButton:active {
+  transform: translateY(0);
+}
+
+/* Active link styles */
+.navLinks a.active {
+  background: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.navLinks a.active::after {
+  content: '';
+  position: absolute;
+  bottom: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 30px;
+  height: 3px;
+  background: linear-gradient(90deg, #ffd700, #ffa500);
+  border-radius: 3px;
+  animation: pulseWidth 2s infinite;
+}
+
+@keyframes pulseWidth {
+  0%, 100% { width: 30px; opacity: 1; }
+  50% { width: 50px; opacity: 0.8; }
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .headerTitle {
-    font-size: 1.2rem;
-    left: 40%;
+    font-size: 1.3rem;
   }
   
   .navLinks {
     gap: 1rem;
   }
   
+  .userInfo {
+    gap: 8px;
+    padding: 4px 10px;
+  }
+}
+
+@media (max-width: 768px) {
+  .headerTitle {
+    font-size: 1.1rem;
+    left: 40%;
+  }
+  
+  .navLinks {
+    gap: 0.8rem;
+    flex-wrap: wrap;
+  }
+  
   .mainHeader, .navHeader {
     padding: 0.5rem 1rem;
+    height: auto;
+    min-height: 45px;
   }
+  
+  .navLinks a {
+    padding: 6px 8px;
+    font-size: 0.85rem;
+  }
+  
+  .userInfo {
+    flex-wrap: wrap;
+    background: transparent;
+  }
+  
+  .userName, .userDepartment, .userRole {
+    font-size: 0.8rem;
+  }
+  
+  .logoutButton {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+/* Loading animation for dropdown */
+@keyframes shimmer {
+  0% { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+/* Custom scrollbar for dropdown */
+.dropdownContent::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dropdownContent::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.dropdownContent::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.dropdownContent::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Tooltip styles */
+[data-tooltip] {
+  position: relative;
+  cursor: pointer;
+}
+
+[data-tooltip]:before {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 5px 10px;
+  background: #1e293b;
+  color: white;
+  font-size: 0.75rem;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+}
+
+[data-tooltip]:hover:before {
+  opacity: 1;
+  visibility: visible;
+  bottom: 120%;
+}
+
+/* Glowing effect for important items */
+.navLinks li:last-child a {
+  position: relative;
+}
+
+.navLinks li:last-child a::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 8px;
+  height: 8px;
+  background: #22c55e;
+  border-radius: 50%;
+  animation: glow 2s infinite;
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 5px #22c55e; }
+  50% { box-shadow: 0 0 15px #22c55e; }
 }

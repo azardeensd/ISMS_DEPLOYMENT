@@ -1102,4 +1102,4 @@ class api {
   }
 }
 
-export default new api(); 
+export default new api();

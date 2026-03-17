@@ -6,6 +6,7 @@ class api {
     this.supabase = supabase;
   }
   
+  // ============ AUTHENTICATION ============
   async login(username, password) {
     try {
       const { data: user, error } = await this.supabase
@@ -14,13 +15,7 @@ class api {
         .eq('username', username)
         .single();
 
-      if (error || !user) {
-        throw new Error('Invalid credentials');
-      }
-
-      // For demo purposes, we're storing plain text passwords
-      // In production, you should use Supabase Auth or hash passwords
-      if (user.password !== password) {
+      if (error || !user || user.password !== password) {
         throw new Error('Invalid credentials');
       }
 
@@ -31,9 +26,7 @@ class api {
         .update({ token })
         .eq('id', user.id);
 
-      if (updateError) {
-        throw new Error('Login failed');
-      }
+      if (updateError) throw new Error('Login failed');
 
       const userData = {
         id: user.id,
@@ -41,7 +34,9 @@ class api {
         role: user.role,
         token: token,
         department: user.department,
-        UserID: user.id
+        UserID: user.id,
+        // Return the password change flag to intercept on frontend
+        requiresPasswordChange: user.requires_password_change 
       };
 
       localStorage.setItem('user', JSON.stringify(userData));
@@ -51,6 +46,25 @@ class api {
     }
   }
 
+  // Handle the first-time password change
+  async changeFirstTimePassword(userId, newPassword) {
+    try {
+      const { error } = await this.supabase
+        .from('users')
+        .update({ 
+          password: newPassword,
+          requires_password_change: false // Remove the restriction
+        })
+        .eq('id', userId);
+
+      if (error) throw error;
+      return { success: true };
+    } catch (err) {
+      throw new Error('Failed to update password');
+    }
+  }
+
+  // ============ USER MANAGEMENT ============
   async getAllUsers() {
     try {
       const { data, error } = await this.supabase
@@ -58,8 +72,19 @@ class api {
         .select('*')
         .order('company_name', { ascending: true });
 
-      if (error) throw error;
+      // 1. If Supabase throws an error, log it exactly as it comes in
+      if (error) {
+        console.error("[DEBUG] Supabase SELECT Error:", error);
+        throw error;
+      }
 
+      // 2. Safety Check: If data is null for some reason, return an empty array to prevent .map() from crashing
+      if (!data) {
+        console.warn("[DEBUG] Supabase returned null data for users.");
+        return [];
+      }
+
+      // 3. Map the data safely
       return data.map(user => ({
         id: user.id,
         CompanyName: user.company_name,
@@ -71,19 +96,22 @@ class api {
         Role: user.role
       }));
     } catch (err) {
-      throw new Error('Failed to fetch users');
+      console.error('[DEBUG] Full catch block error in getAllUsers:', err);
+      // Pass the exact error message up to the frontend toast
+      throw new Error(err.message || 'Failed to fetch users'); 
     }
   }
 
   async createUser(userData) {
     try {
-      // Check if username already exists
-      const { data: existingUser } = await this.supabase
+      // Check if username already exists safely
+      const { data: existingUser, error: searchError } = await this.supabase
         .from('users')
         .select('id')
         .eq('username', userData.username)
-        .single();
+        .maybeSingle(); // Used maybeSingle to prevent 406 error on empty result
 
+      if (searchError) throw searchError;
       if (existingUser) {
         throw new Error('Username already exists');
       }
@@ -95,13 +123,14 @@ class api {
           plant_name: userData.plantName,
           username: userData.username,
           gen_id: userData.genId,
-          password: userData.password, // In production, hash this
+          password: userData.password, 
           email: userData.email,
           department: userData.department,
-          role: userData.role
+          role: userData.role,
+          requires_password_change: true // Force password change on first login
         }])
         .select()
-        .single();
+        .single(); 
 
       if (error) throw error;
       return { success: true };
@@ -112,15 +141,16 @@ class api {
 
   async updateUser(userId, userData) {
     try {
-      // Check if username is taken by another user
+      // Check if username is taken by another user safely
       if (userData.username) {
-        const { data: existingUser } = await this.supabase
+        const { data: existingUser, error: searchError } = await this.supabase
           .from('users')
           .select('id')
           .eq('username', userData.username)
           .neq('id', userId)
-          .single();
-
+          .maybeSingle(); // Used maybeSingle to prevent 406 error
+          
+        if (searchError) throw searchError;
         if (existingUser) {
           throw new Error('Username already exists');
         }
@@ -180,7 +210,6 @@ class api {
         `)
         .order('name');
 
-      // Filter by plant for non-admin users
       if (user && user.role !== 'Super Admin') {
         const { data: userData } = await this.supabase
           .from('users')
@@ -300,7 +329,6 @@ class api {
         .select('*')
         .order('assessment_date', { ascending: false });
 
-      // Filter by plant for non-admin users
       if (user && user.role !== 'Super Admin') {
         const { data: userData } = await this.supabase
           .from('users')
@@ -347,10 +375,8 @@ class api {
 
   async createRiskAssessment(riskData) {
     try {
-      // Generate risk ID
       const riskId = `RISK-${Date.now().toString(36).toUpperCase()}`;
       
-      // Calculate risk score and level
       const riskScore = riskData.likelihood * riskData.impact;
       let riskLevel = 'Low';
       if (riskScore >= 15) riskLevel = 'High';
@@ -391,7 +417,6 @@ class api {
 
   async updateRiskAssessment(riskId, riskData) {
     try {
-      // Recalculate risk score and level if likelihood or impact changed
       let riskLevel = riskData.risk_level;
       let riskScore = riskData.risk_score;
       
@@ -454,7 +479,6 @@ class api {
 
       if (error) throw error;
 
-      // Create a 5x5 matrix
       const matrix = Array(5).fill().map(() => Array(5).fill(0));
       data.forEach(risk => {
         if (risk.likelihood && risk.impact) {
@@ -530,7 +554,6 @@ class api {
 
       if (error) throw error;
 
-      // Group by role
       const permissionsByRole = {};
       data.forEach(rp => {
         if (!permissionsByRole[rp.role_id]) {
@@ -560,7 +583,6 @@ class api {
       const user = JSON.parse(localStorage.getItem('user'));
       if (!user) return;
 
-      // Get IP address (you might need to use a service or serverless function for this)
       const ip_address = '127.0.0.1'; // Placeholder
 
       const { error } = await this.supabase
@@ -685,7 +707,7 @@ class api {
     }
   }
 
-  // 1. UPDATED: Fetch Database data for audits + File data for dynamic sheets
+  // ============ AUDIT MANAGEMENT ============
   async getAuditData(auditType) {
     try {
       const user = JSON.parse(localStorage.getItem('user'));
@@ -701,7 +723,6 @@ class api {
       const { data: dbData, error } = await query;
       if (error) throw error;
 
-      // Ensure the interactive Audit tracker data is maintained from the database
       const auditRecords = dbData.map(record => ({
         ID: record.id,
         SN: record.sn,
@@ -722,7 +743,6 @@ class api {
 
       const groupedData = { 'PIA_F01': auditRecords };
       
-      // Magic happens here: Download the latest Excel file from the bucket to render the other tabs!
       try {
         const { data: files } = await this.supabase.storage
           .from('audit-files')
@@ -737,9 +757,7 @@ class api {
             const workbook = XLSX.read(arrayBuffer, { type: 'array' });
 
             workbook.SheetNames.forEach(sheetName => {
-              // Only parse the other sheets (Front Page, Summary, etc.) dynamically
               if (sheetName !== 'PIA_F01' && !sheetName.toLowerCase().includes('audit')) {
-                // { header: 1 } ensures it maps the exact Excel Grid visually!
                 groupedData[sheetName] = XLSX.utils.sheet_to_json(workbook.Sheets[sheetName], { header: 1, defval: "" });
               }
             });
@@ -756,7 +774,6 @@ class api {
     }
   }
 
-  // 2. NEW: Dynamically fetch layout sheets (Front Page, etc.) from the exact file selected
   async getFileLayouts(auditType, uploadDate) {
     try {
       const { data: files } = await this.supabase.storage
@@ -769,12 +786,11 @@ class api {
       const typedFiles = files.filter(f => f.name.startsWith(auditType));
       
       if (!uploadDate || uploadDate === 'All') {
-        targetFile = typedFiles[0]; // Fallback to latest
+        targetFile = typedFiles[0];
       } else {
         const targetTime = new Date(uploadDate).getTime();
         targetFile = typedFiles.find(f => {
            const fileTime = new Date(f.created_at).getTime();
-           // Find the file whose creation time matches the database upload time (within 2 mins)
            return Math.abs(fileTime - targetTime) < 120000; 
         }) || typedFiles[0];
       }
@@ -799,7 +815,6 @@ class api {
     }
   }
 
-  // 3. Upload File (with Excel Date correction)
   async uploadAuditFile(formData, auditType) {
     try {
       const file = formData.get('file');
@@ -837,7 +852,6 @@ class api {
         return null;
       };
 
-      // Ensure exact timestamp matching between db and storage
       const dbUploadDate = new Date().toISOString();
 
       workbook.SheetNames.forEach(sheetName => {
@@ -877,7 +891,6 @@ class api {
     }
   }
 
-  // Update Audit Record
   async updateAuditRecord(auditType, record) {
     try {
       const tableName = auditType === 'internal' ? 'internal_audits' : 'external_audits';
@@ -901,7 +914,6 @@ class api {
     }
   }
 
-  // Upload Evidence
   async uploadEvidence(formData) {
     try {
       const file = formData.get('file');
@@ -949,7 +961,7 @@ class api {
     }
   }
 
-  // Management Options
+  // ============ MANAGEMENT OPTIONS ============
   async getCompanies() {
     try {
       const { data, error } = await this.supabase
@@ -1051,7 +1063,6 @@ class api {
 
   async deleteCompany(companyId) {
     try {
-      // Check if company has plants
       const { data: plants } = await this.supabase
         .from('plants')
         .select('id')

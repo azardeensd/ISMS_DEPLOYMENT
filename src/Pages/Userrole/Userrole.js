@@ -167,6 +167,16 @@ const UserRole = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // NEW: Password Validation Regex
+    // Requires: 1 letter, 1 number, 1 special character, min 8 chars
+    const passwordRegex = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[^a-zA-Z0-9]).{8,}$/;
+    
+    if ((!editingUserId || formData.password) && !passwordRegex.test(formData.password)) {
+      toast.error('Password must be at least 8 characters long and contain letters, numbers, and a special character.');
+      return;
+    }
+
     setIsLoading(true);
     setError('');
     

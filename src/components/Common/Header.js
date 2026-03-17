@@ -89,9 +89,6 @@ const Header = () => {
             {userName && (
               <span className={styles.userName}>Welcome, {userName}</span>
             )}
-            {userDepartment && (
-              <span className={styles.userDepartment}>Dept: {userDepartment}</span>
-            )}
             <span className={styles.userRole}>Role: {userRole}</span>
           </div>
           <button onClick={handleLogout} className={styles.logoutButton}>Logout</button>

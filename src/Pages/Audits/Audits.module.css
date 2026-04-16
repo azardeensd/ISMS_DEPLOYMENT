@@ -17,7 +17,7 @@
 
 .auditContent {
   overflow: hidden;
-  height: calc(100vh - 140px);
+  height: calc(120vh - 170px);
   display: flex;
   flex-direction: column;
   background: rgba(255, 255, 255, 0.95);
@@ -304,10 +304,11 @@
   border-radius: 16px;
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
   overflow: hidden;
-  border: 1px solid #f1f5f9;
+  border: 1px solid #e2e8f0;
   flex: 1;
   display: flex;
   flex-direction: column;
+  margin-top: 10px;
 }
 
 .tableContainer {
@@ -315,142 +316,124 @@
   max-height: calc(100vh - 280px);
   overflow: auto;
   scrollbar-width: thin;
-  scrollbar-color: #cbd5e1 #f1f5f9;
+  scrollbar-color: #cbd5e1 #f8fafc;
 }
 
-.tableContainer::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+/* Scrollbar Styling */
+.tableContainer::-webkit-scrollbar { width: 8px; height: 8px; }
+.tableContainer::-webkit-scrollbar-track { background: #f8fafc; }
+.tableContainer::-webkit-scrollbar-thumb { 
+  background: #cbd5e1; 
+  border-radius: 10px; 
+  border: 2px solid #f8fafc;
 }
 
-.tableContainer::-webkit-scrollbar-track {
-  background: #f1f5f9;
-  border-radius: 10px;
-}
-
-.tableContainer::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
-  border-radius: 10px;
-}
-
-.tableContainer::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
-}
-
-/* Audit Table */
+/* Audit Table Base */
 .auditTable {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  min-width: fit-content;
+  min-width: 100%;
 }
 
-.auditTable thead {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-}
-
+/* Header Styling */
 .auditTable th {
-  padding: 16px 20px;
+  padding: 18px 20px;
   text-align: left;
-  font-size: 13px;
-  font-weight: 600;
-  color: #1e293b;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  font-size: 12px;
+  font-weight: 700;
+  color: #475569;
+  background: #f8fafc; /* Clean, flat header look */
   border-bottom: 2px solid #e2e8f0;
   border-right: 1px solid #e2e8f0;
   position: sticky;
   top: 0;
-  white-space: nowrap;
+  z-index: 20;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.05em;
 }
 
-.auditTable th:last-child {
-  border-right: none;
-}
-
+/* Cell Styling */
 .auditTable td {
   padding: 16px 20px;
   border-bottom: 1px solid #f1f5f9;
   border-right: 1px solid #f1f5f9;
-  color: #475569;
-  font-size: 14px;
-  vertical-align: top;
+  color: #334155;
+  font-size: 13.5px;
+  vertical-align: middle;
   background-color: white;
   transition: all 0.2s ease;
 }
 
-.auditTable tr:last-child td {
-  border-bottom: none;
-}
-
+/* Row Hover Effect */
 .auditTable tr:hover td {
-  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
-  box-shadow: inset 0 0 0 1px #667eea;
+  background-color: #f1f7ff; /* Soft blue highlight */
+  color: #0f172a;
 }
 
-/* Cell-specific styles */
-.observationCell {
-  min-width: 300px;
-  max-width: 300px;
-  word-break: break-word;
-}
-
-.editableCell {
-  background-color: #f8fafc;
-}
-
-/* NC Badges */
-.ncBadge {
-  display: inline-block;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 12px;
+/* Highlight the first column (SN or Location) */
+.auditTable td:first-child {
   font-weight: 600;
-  white-space: nowrap;
-  text-transform: uppercase;
-  letter-spacing: 0.3px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  color: #1e293b;
 }
 
-.ncBadge.major-nc,
+/* NC Badges - More "Glassmorphism" look */
+.ncBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 12px;
+  border-radius: 6px; /* Slightly more square for a modern feel */
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.ncBadge.major-nc {
+  background: #fee2e2;
+  color: #dc2626;
+  border: 1px solid #fecaca;
+}
+
 .ncBadge.minor-nc {
-  background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
-  color: #b91c1c;
+  background: #ffedd5;
+  color: #d97706;
+  border: 1px solid #fed7aa;
 }
 
 .ncBadge.observation {
-  background: linear-gradient(135deg, #fef9c3 0%, #fde047 100%);
-  color: #a16207;
+  background: #e0f2fe;
+  color: #0284c7;
+  border: 1px solid #bae6fd;
 }
 
-.ncBadge.improvement {
-  background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
-  color: #15803d;
-}
-
-/* Edit Field Container */
-.editFieldContainer {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
+/* Edit Content Box */
 .fieldContent {
-  padding: 10px 12px;
+  padding: 12px;
   border-radius: 8px;
-  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-  min-height: 50px;
-  max-height: 100px;
-  overflow-y: auto;
-  word-break: break-word;
+  background: #f8fafc;
   border: 1px solid #e2e8f0;
-  font-size: 13px;
-  line-height: 1.5;
+  color: #64748b;
+  font-size: 12.5px;
+  line-height: 1.6;
+  max-height: 80px;
+  transition: border-color 0.2s;
 }
 
+.auditTable tr:hover .fieldContent {
+  border-color: #cbd5e1;
+  background: white;
+}
+
+/* Status Select Customization inside table */
+.statusSelect {
+  padding: 6px 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 12px;
+  border: 1px solid transparent;
+}
 .editButton {
   display: flex;
   align-items: center;
@@ -633,7 +616,7 @@
 .popupTextarea {
   width: 100%;
   min-height: 250px;
-  padding: 15px;
+  padding: 0.5px;
   border: 2px solid #e2e8f0;
   border-radius: 12px;
   font-family: 'Poppins', sans-serif;
@@ -979,54 +962,86 @@
   -webkit-text-fill-color: transparent;
   margin-bottom: 20px;
 }
+/* Document Header Area */
+.summaryDocumentHeader {
+  text-align: center;
+  margin-bottom: 25px;
+  padding: 10px 0;
+}
 
-/* =========================================================
-   NEW: CLEAN TABLE (For Summary, Version Control Sheets) 
-   ========================================================= */
+.summaryMainTitle {
+  color: #1e293b;
+  font-size: 20px;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.summarySubTitle {
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+  margin: 0;
+  font-style: italic;
+}
+
+.summaryDivider {
+  height: 3px;
+  width: 60px;
+  background: #3b82f6;
+  margin: 15px auto;
+  border-radius: 2px;
+}
+
+/* Existing Clean Table Fixes */
 .cleanTableContainer {
-  background: white;
+  background: #ffffff;
   border-radius: 12px;
-  padding: 15px; /* Reduced for a more compact look */
-  overflow-x: auto;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
-  margin: 10px 0;
-  max-width: fit-content; /* Prevents the table from stretching across the whole screen */
+  padding: 30px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
+  margin: 20px auto;
 }
 
 .cleanTable {
   width: 100%;
   border-collapse: collapse;
-  text-align: left;
+  border: 2px solid #334155; /* Darker outer border for professional look */
 }
 
 .cleanTableHeader {
-  padding: 8px 15px; /* Tighter padding */
+  background-color: #334155 !important; /* Professional Dark Header */
+  color: #ffffff !important;
   font-weight: 600;
-  color: #1e293b;
-  background-color: #f8fafc;
-  border-bottom: 2px solid #e2e8f0;
-  font-size: 13px; /* Smaller, compact font */
-  white-space: pre-wrap;
+  text-transform: uppercase;
+  font-size: 12px;
+  padding: 12px 15px;
+  border: 1px solid #475569;
+  text-align: center;
 }
 
 .cleanTableCell {
-  padding: 8px 15px; /* Tighter padding */
-  color: #475569;
-  border-bottom: 1px solid #f1f5f9;
-  font-size: 13px; /* Smaller, compact font */
-  transition: background-color 0.2s;
-  white-space: pre-wrap;
+  padding: 12px 15px;
+  border: 1px solid #cbd5e1; /* Clear vertical and horizontal lines */
+  font-size: 13px;
+  color: #334155;
+  text-align: center; /* Center numbers for NC counts */
 }
 
-.cleanTable tr {
-  transition: all 0.2s ease;
+/* Bold the Location Names (First Column) */
+.cleanTable tr td:first-child {
+  text-align: left;
+  font-weight: 700;
+  background-color: #f8fafc;
+  color: #0f172a;
+  min-width: 200px;
 }
 
-.cleanTable tr:hover .cleanTableCell,
-.cleanTable tr:hover .cleanTableHeader {
+/* Last Row (Grand Totals) */
+.cleanTable tr:last-child td {
   background-color: #f1f5f9;
-}
-
-.cleanTable tr:last-child .cleanTableCell {
-  border-bottom: none;
+  border-top: 2px solid #334155;
+  font-weight: 800;
+  color: #000;
 }

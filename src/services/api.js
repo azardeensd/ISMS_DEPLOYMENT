@@ -203,11 +203,7 @@ class api {
       const user = JSON.parse(localStorage.getItem('user'));
       let query = this.supabase
         .from('suppliers')
-        .select(`
-          *,
-          companies (name),
-          plants (name)
-        `)
+        .select('*')
         .order('name');
 
       if (user && user.role !== 'Super Admin') {
@@ -223,25 +219,24 @@ class api {
       }
       
       const { data, error } = await query;
-
       if (error) throw error;
 
       return data.map(supplier => ({
         id: supplier.id,
+        sap_id: supplier.sap_id,
         name: supplier.name,
-        company_name: supplier.companies?.name,
         company_id: supplier.company_id,
-        plant_name: supplier.plants?.name,
         plant_id: supplier.plant_id,
+        plant_name: supplier.plant_name,
         contact_person: supplier.contact_person,
         email: supplier.email,
         phone: supplier.phone,
-        address: supplier.address,
         category: supplier.category,
         status: supplier.status,
-        registration_date: supplier.registration_date,
-        last_audit_date: supplier.last_audit_date,
-        next_audit_date: supplier.next_audit_date,
+        sla_start_date: supplier.sla_start_date,
+        sla_end_date: supplier.sla_end_date,
+        nda_start_date: supplier.nda_start_date, // Added
+        nda_end_date: supplier.nda_end_date,
         rating: supplier.rating
       }));
     } catch (err) {
@@ -255,6 +250,7 @@ class api {
       const { data, error } = await this.supabase
         .from('suppliers')
         .insert([{
+          sap_id: supplierData.sap_id,
           name: supplierData.name,
           company_id: supplierData.company_id,
           plant_id: supplierData.plant_id,
@@ -262,10 +258,12 @@ class api {
           contact_person: supplierData.contact_person,
           email: supplierData.email,
           phone: supplierData.phone,
-          address: supplierData.address,
           category: supplierData.category,
+          sla_start_date: supplierData.sla_start_date,
+          sla_end_date: supplierData.sla_end_date,
+          nda_start_date: supplierData.nda_start_date, // Added
+          nda_end_date: supplierData.nda_end_date,
           status: supplierData.status || 'Active',
-          registration_date: new Date().toISOString().split('T')[0],
           rating: supplierData.rating || 0
         }])
         .select()
@@ -283,6 +281,7 @@ class api {
       const { error } = await this.supabase
         .from('suppliers')
         .update({
+          sap_id: supplierData.sap_id,
           name: supplierData.name,
           company_id: supplierData.company_id,
           plant_id: supplierData.plant_id,
@@ -290,11 +289,12 @@ class api {
           contact_person: supplierData.contact_person,
           email: supplierData.email,
           phone: supplierData.phone,
-          address: supplierData.address,
           category: supplierData.category,
+          sla_start_date: supplierData.sla_start_date,
+          sla_end_date: supplierData.sla_end_date,
+          nda_start_date: supplierData.nda_start_date, // Added
+          nda_end_date: supplierData.nda_end_date,
           status: supplierData.status,
-          last_audit_date: supplierData.last_audit_date,
-          next_audit_date: supplierData.next_audit_date,
           rating: supplierData.rating
         })
         .eq('id', supplierId);
